@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd"
+    logicalFilePath="table/0070_configuration_type.xml">
+
+    <changeSet id="70" author="Aleksei_Zabezhinsky">
+        <comment>Add table "configuration_type"</comment>
+        <createTable tableName="configuration_type" schemaName="main" remarks="Тип настроек конфигурации">
+            <column name="id" type="int" remarks="ID">
+                <constraints primaryKey="true" primaryKeyName="configuration_type_pkey" nullable="false" />
+            </column>
+            <column name="name" type="varchar(16)" remarks="Наименование типа">
+                <constraints nullable="false"
+                             unique="true"
+                             uniqueConstraintName="configuration_type_name_ukey" />
+            </column>
+        </createTable>
+        <sql>
+            ALTER TABLE main.configuration_type
+                ADD CONSTRAINT configuration_type_name_ckey CHECK (char_length(btrim(name)) > 0);
+        </sql>
+        <rollback>
+            <dropTable tableName="configuration_type" schemaName="main" />
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd"
+    logicalFilePath="table/0050_invoice.xml">
+
+    <changeSet id="50" author="Aleksei_Zabezhinsky">
+        <comment>Add table "invoice"</comment>
+        <createTable tableName="invoice" schemaName="main" remarks="Накладная">
+            <column name="id" type="serial" remarks="ID">
+                <constraints primaryKey="true" primaryKeyName="invoice_pkey" nullable="false" />
+            </column>
+            <column name="date" type="date" remarks="Дата накладной">
+                <constraints nullable="false" />
+            </column>
+            <column name="series" type="varchar(64)" remarks="Серия накладной">
+                <constraints unique="true" uniqueConstraintName="invoice_series_ukey" />
+            </column>
+            <column name="producer_id" type="int" remarks="ID поставщика">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+        <addForeignKeyConstraint constraintName="invoice_producer_fkey"
+                                 baseTableSchemaName="main"
+                                 baseTableName="invoice"
+                                 baseColumnNames="producer_id"
+                                 referencedTableName="producer"
+                                 referencedColumnNames="id"
+                                 referencedTableSchemaName="main" />
+        <sql>
+            ALTER TABLE main.invoice
+                ADD CONSTRAINT invoice_series_ckey CHECK (char_length(btrim(series)) > 0);
+        </sql>
+        <rollback>
+            <dropTable tableName="invoice" schemaName="main" />
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>

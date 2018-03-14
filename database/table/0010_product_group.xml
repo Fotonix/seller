@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd"
+    logicalFilePath="table/0010_product_group.xml">
+
+    <changeSet id="10" author="Aleksei_Zabezhinsky">
+        <comment>Add table "product_group"</comment>
+        <createTable tableName="product_group" schemaName="main" remarks="Группа товаров">
+            <column name="id" type="serial" remarks="ID">
+                <constraints primaryKey="true" primaryKeyName="product_group_pkey" nullable="false" />
+            </column>
+            <column name="name" type="varchar(64)" remarks="Наименование">
+                <constraints nullable="false" unique="true" uniqueConstraintName="product_group_name_ukey" />
+            </column>
+        </createTable>
+        <sql>
+            ALTER TABLE main.product_group
+                ADD CONSTRAINT product_group_name_ckey CHECK (char_length(btrim(name)) > 0);
+        </sql>
+        <rollback>
+            <dropTable tableName="product_group" schemaName="main" />
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>

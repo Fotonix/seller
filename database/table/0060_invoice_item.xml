@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd"
+    logicalFilePath="table/0060_invoice_item.xml">
+
+    <changeSet id="60" author="Aleksei_Zabezhinsky">
+        <comment>Add table "invoice_item"</comment>
+        <createTable tableName="invoice_item" schemaName="main" remarks="Позиция накладной">
+            <column name="id" type="serial" remarks="ID">
+                <constraints primaryKey="true" primaryKeyName="invoice_item_pkey" nullable="false" />
+            </column>
+            <column name="invoice_id" type="int" remarks="ID накладной">
+                <constraints nullable="false" />
+            </column>
+            <column name="product_id" type="int" remarks="ID товара">
+                <constraints nullable="false" />
+            </column>
+            <column name="quantity" type="int" remarks="Количество">
+                <constraints nullable="false" />
+            </column>
+            <column name="cost" type="decimal(9,0)" remarks="Стоимость единицы">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+        <addForeignKeyConstraint constraintName="invoice_item_invoice_fkey"
+                                 baseTableSchemaName="main"
+                                 baseTableName="invoice_item"
+                                 baseColumnNames="invoice_id"
+                                 referencedTableName="invoice"
+                                 referencedColumnNames="id"
+                                 referencedTableSchemaName="main" />
+        <addForeignKeyConstraint constraintName="invoice_item_product_fkey"
+                                 baseTableSchemaName="main"
+                                 baseTableName="invoice_item"
+                                 baseColumnNames="product_id"
+                                 referencedTableName="product"
+                                 referencedColumnNames="id"
+                                 referencedTableSchemaName="main" />
+        <sql>
+            ALTER TABLE main.invoice_item
+                ADD CONSTRAINT invoice_item_quantity_ckey CHECK (quantity > 0),
+                ADD CONSTRAINT invoice_item_cost_ckey CHECK (cost > 0);
+        </sql>
+        <rollback>
+            <dropTable tableName="invoice_item" schemaName="main" />
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>

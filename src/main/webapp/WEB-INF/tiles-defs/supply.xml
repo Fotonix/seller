@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 2.1//EN"
+       "http://tiles.apache.org/dtds/tiles-config_2_1.dtd">
+
+<tiles-definitions>
+
+    <definition name=".supply" extends=".mainLayout">
+        <put-attribute name="selectedMenu" value="supply" cascade="true"/>
+        <put-attribute name="submenu" value="/WEB-INF/jsp/supply/submenu.jsp" cascade="true" />
+        <put-attribute name="body" value="/WEB-INF/jsp/supply/supply.jsp" />
+    </definition>
+
+    <definition name=".supply.invoice" extends=".supply">
+        <put-attribute name="selectedSubmenu" value="invoice" cascade="true" />
+        <put-attribute name="subbody" value="/WEB-INF/jsp/supply/invoice.jsp" cascade="true" />
+    </definition>
+
+    <definition name=".supply.invoice.list" extends=".supply">
+        <put-attribute name="selectedSubmenu" value="invoiceList" cascade="true" />
+        <put-attribute name="subbody" value="/WEB-INF/jsp/supply/invoiceList.jsp" cascade="true" />
+    </definition>
+
+</tiles-definitions>

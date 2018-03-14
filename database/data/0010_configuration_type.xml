@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd"
+    logicalFilePath="data/0010_configuration_type.xml">
+
+    <changeSet id="10" author="Aleksei_Zabezhinsky">
+        <comment>Insert data into table "configuration_type"</comment>
+        <insert tableName="configuration_type" schemaName="main">
+            <column name="id">0</column>
+            <column name="name">SYSTEM</column>
+        </insert>
+        <insert tableName="configuration_type" schemaName="main">
+            <column name="id">1</column>
+            <column name="name">USER</column>
+        </insert>
+        <rollback>
+            <delete tableName="configuration_type" schemaName="main">
+                <where>id IN (0, 1)</where>
+            </delete>
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>

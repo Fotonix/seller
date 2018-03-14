@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd"
+    logicalFilePath="table/0020_product.xml">
+
+    <changeSet id="20" author="Aleksei_Zabezhinsky">
+        <comment>Add table "product"</comment>
+        <createTable tableName="product" schemaName="main" remarks="Товар">
+            <column name="id" type="serial" remarks="ID">
+                <constraints primaryKey="true" primaryKeyName="product_pkey" nullable="false" />
+            </column>
+            <column name="name" type="varchar(64)" remarks="Наименование">
+                <constraints nullable="false" unique="true" uniqueConstraintName="product_name_ukey" />
+            </column>
+            <column name="product_group_id" type="int" remarks="ID группы товаров">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+        <addForeignKeyConstraint constraintName="product_product_group_fkey"
+                                 baseTableSchemaName="main"
+                                 baseTableName="product"
+                                 baseColumnNames="product_group_id"
+                                 referencedTableName="product_group"
+                                 referencedColumnNames="id"
+                                 referencedTableSchemaName="main" />
+        <sql>
+            ALTER TABLE main.product
+                ADD CONSTRAINT product_name_ckey CHECK (char_length(btrim(name)) > 0);
+        </sql>
+        <rollback>
+            <dropTable tableName="product" schemaName="main" />
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>

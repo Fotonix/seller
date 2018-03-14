@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd"
+    logicalFilePath="table/0040_producer.xml">
+
+    <changeSet id="40" author="Aleksei_Zabezhinsky">
+        <comment>Add table "producer"</comment>
+        <createTable tableName="producer" schemaName="main" remarks="Поставщик">
+            <column name="id" type="serial" remarks="ID">
+                <constraints primaryKey="true" primaryKeyName="producer_pkey" nullable="false" />
+            </column>
+            <column name="name" type="varchar(64)" remarks="Наименование">
+                <constraints nullable="false" unique="true" uniqueConstraintName="producer_name_ukey" />
+            </column>
+        </createTable>
+        <sql>
+            ALTER TABLE main.producer
+                ADD CONSTRAINT producer_name_ckey CHECK (char_length(btrim(name)) > 0);
+        </sql>
+        <rollback>
+            <dropTable tableName="producer" schemaName="main" />
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>

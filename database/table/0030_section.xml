@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd"
+    logicalFilePath="table/0030_section.xml">
+
+    <changeSet id="30" author="Aleksei_Zabezhinsky">
+        <comment>Add table "section"</comment>
+        <createTable tableName="section" schemaName="main" remarks="Отдел">
+            <column name="id" type="serial" remarks="ID">
+                <constraints primaryKey="true" primaryKeyName="section_pkey" nullable="false" />
+            </column>
+            <column name="name" type="varchar(64)" remarks="Наименование">
+                <constraints nullable="false" unique="true" uniqueConstraintName="section_name_ukey" />
+            </column>
+        </createTable>
+        <sql>
+            ALTER TABLE main.section
+                ADD CONSTRAINT section_name_ckey CHECK (char_length(btrim(name)) > 0);
+        </sql>
+        <rollback>
+            <dropTable tableName="section" schemaName="main" />
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>

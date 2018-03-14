@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd"
+    logicalFilePath="data/0020_configuration.xml">
+
+    <changeSet id="20" author="Andrey_Ponomarenko">
+        <comment>Insert data into table "configuration"</comment>
+        <insert tableName="configuration" schemaName="main">
+            <column name="key">exponent</column>
+            <column name="type_id">1</column>
+            <column name="value">1</column>
+            <column name="regexp">^[0-9]{1,5}$</column>
+            <column name="description">Порядок вывода стоимости (показатель степени)</column>
+        </insert>
+        <insert tableName="configuration" schemaName="main">
+            <column name="key">name_exponent</column>
+            <column name="type_id">1</column>
+            <column name="value">руб.</column>
+            <column name="regexp"> ^[A-zА-я. ]{3,25}$</column>
+            <column name="description">Наименование порядка вывода стоимости</column>
+        </insert>
+        <insert tableName="configuration" schemaName="main">
+            <column name="key">section_default</column>
+            <column name="type_id">1</column>
+            <column name="value">Реализация товара</column>
+            <column name="regexp">^[A-zА-я. ]{3,25}$</column>
+            <column name="description">Отдел по умолчанию</column>
+        </insert>
+        <rollback>
+            <delete tableName="configuration" schemaName="main">
+                <where>key IN ('exponent', 'name_exponent', 'section_default')</where>
+            </delete>
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>

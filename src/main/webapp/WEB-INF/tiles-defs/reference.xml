@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 2.1//EN"
+       "http://tiles.apache.org/dtds/tiles-config_2_1.dtd">
+
+<tiles-definitions>
+
+    <definition name=".reference" extends=".mainLayout">
+        <put-attribute name="selectedMenu" value="reference" cascade="true"/>
+        <put-attribute name="submenu" value="/WEB-INF/jsp/reference/submenu.jsp" cascade="true" />
+        <put-attribute name="body" value="/WEB-INF/jsp/reference/reference.jsp" />
+    </definition>
+
+    <definition name=".reference.productGroup" extends=".reference">
+        <put-attribute name="selectedSubmenu" value="productGroup" cascade="true" />
+        <put-attribute name="subbody" value="/WEB-INF/jsp/reference/productGroup.jsp" cascade="true" />
+    </definition>
+
+    <definition name=".reference.product" extends=".reference">
+        <put-attribute name="selectedSubmenu" value="product" cascade="true" />
+        <put-attribute name="subbody" value="/WEB-INF/jsp/reference/product.jsp" cascade="true" />
+    </definition>
+
+    <definition name=".reference.section" extends=".reference">
+        <put-attribute name="selectedSubmenu" value="section" cascade="true" />
+        <put-attribute name="subbody" value="/WEB-INF/jsp/reference/section.jsp" cascade="true" />
+    </definition>
+
+    <definition name=".reference.producer" extends=".reference">
+        <put-attribute name="selectedSubmenu" value="producer" cascade="true" />
+        <put-attribute name="subbody" value="/WEB-INF/jsp/reference/producer.jsp" cascade="true" />
+    </definition>
+
+</tiles-definitions>

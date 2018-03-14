@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd"
+    logicalFilePath="table/0080_configuration.xml">
+
+    <changeSet id="80" author="Aleksei_Zabezhinsky">
+        <comment>Add table "configuration"</comment>
+        <createTable tableName="configuration" schemaName="main" remarks="Настройки">
+            <column name="key" type="varchar(64)" remarks="Ключ">
+                <constraints primaryKey="true" primaryKeyName="configuration_pkey" nullable="false" />
+            </column>
+            <column name="type_id" type="int" remarks="ID типа настройки">
+                <constraints nullable="false" />
+            </column>
+            <column name="value" type="varchar(64)" remarks="Значение">
+                <constraints nullable="false" />
+            </column>
+            <column name="regexp"
+                    type="varchar(64)"
+                    remarks="Регулярное выражение для проверки валидности значения">
+                <constraints nullable="false" />
+            </column>
+            <column name="description"
+                    type="varchar(64)"
+                    remarks="Описание">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+        <addForeignKeyConstraint constraintName="configuration_configuration_type_fkey"
+                                 baseTableSchemaName="main"
+                                 baseTableName="configuration"
+                                 baseColumnNames="type_id"
+                                 referencedTableName="configuration_type"
+                                 referencedColumnNames="id"
+                                 referencedTableSchemaName="main" />
+        <sql>
+            ALTER TABLE main.configuration
+                ADD CONSTRAINT configuration_key_ckey CHECK (char_length(btrim("key")) > 0),
+                ADD CONSTRAINT configuration_value_ckey CHECK (char_length(btrim("value")) > 0),
+                ADD CONSTRAINT configuration_regexp_ckey CHECK (char_length(btrim(regexp)) > 0),
+                ADD CONSTRAINT configuration_description_ckey CHECK (char_length(btrim(description)) > 0);
+        </sql>
+        <rollback>
+            <dropTable tableName="configuration" schemaName="main" />
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>
